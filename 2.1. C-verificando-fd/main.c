@@ -35,8 +35,18 @@ int main() {
    n_bytes_escritos = write(fd_arquivo_exemplo2, buffer_escrita, strlen(buffer_escrita));
    printf("Número de bytes escritos %d\n", n_bytes_escritos);
 
+   // Quando a aplicação alcançar este ponto, abra um terminal e verifique o fd table do processo
+   // $: ps aux
+   // Verifique o número do processo do main e procure a pasta /fd dentro da pasta de processo
+   // Exemplo: $: la -all /proc/123/fd
+   ch = getchar();
+
    close(fd_leitura);
    close(fd_escrita);
+
+   // Verifique o fd table aqui neste ponto também
+   // Exemplo: $: la -all /proc/123/fd
+   ch = getchar();
 
    return EXIT_SUCCESS;
 }

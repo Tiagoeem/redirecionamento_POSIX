@@ -1,0 +1,3 @@
+Escrita no documento via código
+Escrita no documento via código
+Código adicionado via fd copiado por dup

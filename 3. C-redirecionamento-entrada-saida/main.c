@@ -15,7 +15,7 @@ int main() {
    // Abre o arquivo no "Open files table"
    // O retorno é o file descriptor para esse processo que aponta para o arquivo na tabela "Open files table"
    int fd_leitura = open("./texto.txt", O_RDWR | O_CREAT);
-   int fd_escrita = open("./escrita_texto.txt", O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
+   int fd_escrita = open("./escrita_texto.txt", O_WRONLY| O_APPEND | O_CREAT, S_IRUSR | S_IWUSR);
    
    // Se o valor retornado for menor que zero algum erro ocorreu
    // Caso queira tratar algum erro específico ver lista em https://linux.die.net/man/3/open
@@ -32,11 +32,45 @@ int main() {
    printf("fd arquivo escrita: %d\n", fd_escrita);
    strcpy(buffer_escrita, "Escrita no documento via código\n");
    // Escrita no arquivo apontado pelo file descriptor
-   n_bytes_escritos = write(fd_arquivo_exemplo2, buffer_escrita, strlen(buffer_escrita));
+   n_bytes_escritos = write(fd_escrita, buffer_escrita, strlen(buffer_escrita));
    printf("Número de bytes escritos %d\n", n_bytes_escritos);
+
+   // Quando a aplicação alcançar este ponto, abra um terminal e verifique o fd table do processo
+   // $: ps aux
+   // Verifique o número do processo do main e procure a pasta /fd dentro da pasta de processo
+   // Exemplo: $: la -all /proc/123/fd
+   ch = getchar();
+
+   int fd1_dup = dup(fd_escrita);
+   int fd2_dup = dup(fd_escrita);
+   int fd3_dup = dup(fd_escrita);
+
+   // Pausa para verificar o fd do processo
+   ch = getchar();
+
+   // Se eu escrever no fd_dup, qual será o comportamento?
+   strcpy(buffer_escrita, "Código adicionado via fd copiado por dup\n");
+   // Escrita no arquivo apontado pelo file descriptor
+   write(fd1_dup, buffer_escrita, strlen(buffer_escrita));
+   
+   // Pausa para verificar o fd do processo
+   ch = getchar();
+
+   // https://linux.die.net/man/2/dup2
+   close(fd2_dup);
+   dup2(fd_leitura, fd2_dup);
+
+   ch = getchar();
 
    close(fd_leitura);
    close(fd_escrita);
+   close(fd1_dup);
+   close(fd2_dup);
+   close(fd3_dup);
+
+   // Verifique o fd table aqui neste ponto também
+   // Exemplo: $: la -all /proc/123/fd
+   ch = getchar();
 
    return EXIT_SUCCESS;
 }

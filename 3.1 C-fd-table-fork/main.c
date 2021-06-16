@@ -22,28 +22,36 @@ int main() {
    if ((fd_leitura < 0) || (fd_escrita < 0))
       return EXIT_FAILURE;
 
+   ch = getchar();
+
+   int pid = fork();
+
+   ch = getchar();
+
+   if(pid == -1){
+      perror("\n pid");
+      return EXIT_FAILURE;
+   } else if(pid == 0){ // Filho
+      
+      // https://linux.die.net/man/2/dup2
+      dup2(fd_escrita, STDOUT_FILENO);
+
+   } else { // Pai
+      wait();
+      // https://linux.die.net/man/2/dup2
+      dup2(fd_leitura, STDOUT_FILENO);
+   }
+
    // Quando a aplicação alcançar este ponto, abra um terminal e verifique o fd table do processo
    // $: ps aux
    // Verifique o número do processo do main e procure a pasta /fd dentro da pasta de processo
    // Exemplo: $: la -all /proc/123/fd
    ch = getchar();
 
-   // https://linux.die.net/man/2/dup2
-   dup2(fd_escrita, STDOUT_FILENO);
-
-   ch = getchar();
-
-   printf("Escrito a partir de um printf, teste de valor %d\n", 90);
-   puts("Escrito por um puts");
-
-   ch = getchar();
 
    close(fd_leitura);
    close(fd_escrita);
 
-   // Verifique o fd table aqui neste ponto também
-   // Exemplo: $: la -all /proc/123/fd
-   ch = getchar();
 
    return EXIT_SUCCESS;
 }

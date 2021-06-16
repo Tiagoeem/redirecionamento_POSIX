@@ -1,0 +1,318 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 13.3
+-- Dumped by pg_dump version 13.3
+
+-- Started on 2021-05-31 20:46:09
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+DROP DATABASE hotel_dev;
+--
+-- TOC entry 3017 (class 1262 OID 16395)
+-- Name: hotel_dev; Type: DATABASE; Schema: -; Owner: postgres
+--
+
+CREATE DATABASE hotel_dev WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE = 'Portuguese_Brazil.1252';
+
+
+ALTER DATABASE hotel_dev OWNER TO postgres;
+
+\connect hotel_dev
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 202 (class 1259 OID 16407)
+-- Name: tbl_clientes; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tbl_clientes (
+    sobrenome character varying(200) NOT NULL,
+    primeiro_nome character varying(50) NOT NULL,
+    cpf character varying(20) NOT NULL,
+    id_cliente integer NOT NULL
+);
+
+
+ALTER TABLE public.tbl_clientes OWNER TO postgres;
+
+--
+-- TOC entry 205 (class 1259 OID 16433)
+-- Name: tbl_clientes_id_clientee_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.tbl_clientes_id_clientee_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tbl_clientes_id_clientee_seq OWNER TO postgres;
+
+--
+-- TOC entry 3018 (class 0 OID 0)
+-- Dependencies: 205
+-- Name: tbl_clientes_id_clientee_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.tbl_clientes_id_clientee_seq OWNED BY public.tbl_clientes.id_cliente;
+
+
+--
+-- TOC entry 201 (class 1259 OID 16398)
+-- Name: tbl_quartos; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tbl_quartos (
+    id_quarto integer NOT NULL,
+    tipo character varying NOT NULL,
+    andar integer NOT NULL,
+    tipo_cama character varying NOT NULL,
+    n_pessoas_max integer NOT NULL,
+    descricao character varying NOT NULL
+);
+
+
+ALTER TABLE public.tbl_quartos OWNER TO postgres;
+
+--
+-- TOC entry 200 (class 1259 OID 16396)
+-- Name: tbl_quartos_id_quarto_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.tbl_quartos_id_quarto_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tbl_quartos_id_quarto_seq OWNER TO postgres;
+
+--
+-- TOC entry 3019 (class 0 OID 0)
+-- Dependencies: 200
+-- Name: tbl_quartos_id_quarto_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.tbl_quartos_id_quarto_seq OWNED BY public.tbl_quartos.id_quarto;
+
+
+--
+-- TOC entry 204 (class 1259 OID 16414)
+-- Name: tbl_reserva; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tbl_reserva (
+    data_entrada date NOT NULL,
+    data_saida date NOT NULL,
+    id_cliente integer NOT NULL,
+    id_quarto integer NOT NULL,
+    id_reserva bigint NOT NULL,
+    observacoes character varying(500)
+);
+
+
+ALTER TABLE public.tbl_reserva OWNER TO postgres;
+
+--
+-- TOC entry 203 (class 1259 OID 16412)
+-- Name: tbl_reserva_id_reserva_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.tbl_reserva_id_reserva_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tbl_reserva_id_reserva_seq OWNER TO postgres;
+
+--
+-- TOC entry 3020 (class 0 OID 0)
+-- Dependencies: 203
+-- Name: tbl_reserva_id_reserva_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.tbl_reserva_id_reserva_seq OWNED BY public.tbl_reserva.id_reserva;
+
+
+--
+-- TOC entry 2865 (class 2604 OID 16435)
+-- Name: tbl_clientes id_cliente; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tbl_clientes ALTER COLUMN id_cliente SET DEFAULT nextval('public.tbl_clientes_id_clientee_seq'::regclass);
+
+
+--
+-- TOC entry 2864 (class 2604 OID 16401)
+-- Name: tbl_quartos id_quarto; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tbl_quartos ALTER COLUMN id_quarto SET DEFAULT nextval('public.tbl_quartos_id_quarto_seq'::regclass);
+
+
+--
+-- TOC entry 2866 (class 2604 OID 16417)
+-- Name: tbl_reserva id_reserva; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tbl_reserva ALTER COLUMN id_reserva SET DEFAULT nextval('public.tbl_reserva_id_reserva_seq'::regclass);
+
+
+--
+-- TOC entry 3008 (class 0 OID 16407)
+-- Dependencies: 202
+-- Data for Name: tbl_clientes; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.tbl_clientes VALUES ('Simpson', 'Homer', '551.593.990-54', 1);
+INSERT INTO public.tbl_clientes VALUES ('Sanchez
+', 'Rick', '319.203.270-70', 2);
+INSERT INTO public.tbl_clientes VALUES ('Soares', 'Rosana', '055.460.070-60', 4);
+INSERT INTO public.tbl_clientes VALUES ('deGrasse', 'Neil ', '364.757.890-89', 6);
+INSERT INTO public.tbl_clientes VALUES ('Silva', 'Jair', '147.090.950-27', 15);
+
+
+--
+-- TOC entry 3007 (class 0 OID 16398)
+-- Dependencies: 201
+-- Data for Name: tbl_quartos; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.tbl_quartos VALUES (2, 'luxo-solteiro
+', 7, '2 de solteiros
+', 2, 'contem frigobar');
+INSERT INTO public.tbl_quartos VALUES (1, 'luxo', 1, 'casal', 2, 'quarto luxuoso
+aceita fumantes');
+
+
+--
+-- TOC entry 3010 (class 0 OID 16414)
+-- Dependencies: 204
+-- Data for Name: tbl_reserva; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.tbl_reserva VALUES ('2021-05-29', '2021-06-05', 2, 1, 1, 'Reserva de ultima hora
+');
+
+
+--
+-- TOC entry 3021 (class 0 OID 0)
+-- Dependencies: 205
+-- Name: tbl_clientes_id_clientee_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.tbl_clientes_id_clientee_seq', 15, true);
+
+
+--
+-- TOC entry 3022 (class 0 OID 0)
+-- Dependencies: 200
+-- Name: tbl_quartos_id_quarto_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.tbl_quartos_id_quarto_seq', 2, true);
+
+
+--
+-- TOC entry 3023 (class 0 OID 0)
+-- Dependencies: 203
+-- Name: tbl_reserva_id_reserva_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.tbl_reserva_id_reserva_seq', 1, true);
+
+
+--
+-- TOC entry 2870 (class 2606 OID 16441)
+-- Name: tbl_clientes id_cliente; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tbl_clientes
+    ADD CONSTRAINT id_cliente PRIMARY KEY (id_cliente);
+
+
+--
+-- TOC entry 2868 (class 2606 OID 16406)
+-- Name: tbl_quartos tbl_quartos_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tbl_quartos
+    ADD CONSTRAINT tbl_quartos_pkey PRIMARY KEY (id_quarto);
+
+
+--
+-- TOC entry 2873 (class 2606 OID 16422)
+-- Name: tbl_reserva tbl_reserva_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tbl_reserva
+    ADD CONSTRAINT tbl_reserva_pkey PRIMARY KEY (id_reserva);
+
+
+--
+-- TOC entry 2871 (class 1259 OID 16447)
+-- Name: fki_id_cliente; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX fki_id_cliente ON public.tbl_reserva USING btree (id_cliente);
+
+
+--
+-- TOC entry 2875 (class 2606 OID 16442)
+-- Name: tbl_reserva id_cliente; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tbl_reserva
+    ADD CONSTRAINT id_cliente FOREIGN KEY (id_cliente) REFERENCES public.tbl_clientes(id_cliente);
+
+
+--
+-- TOC entry 2874 (class 2606 OID 16428)
+-- Name: tbl_reserva id_quarto; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tbl_reserva
+    ADD CONSTRAINT id_quarto FOREIGN KEY (id_quarto) REFERENCES public.tbl_quartos(id_quarto);
+
+
+-- Completed on 2021-05-31 20:46:10
+
+--
+-- PostgreSQL database dump complete
+--
+
